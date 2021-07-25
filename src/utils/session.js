@@ -1,4 +1,4 @@
-const SessionModel = require("../models/session.model");
+const SessionModel =require('codian-academy-model/models/session.model");
 const { GetFullUrl } = require("./common-func");
 
 module.exports.TrackSession = async ({ req, status, message }) => {

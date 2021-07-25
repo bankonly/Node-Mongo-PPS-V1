@@ -1,6 +1,6 @@
 const Catcher = require("../middlewares/async");
 const { Res, _, JwtGenerator } = require("../utils/common-func");
-const UserModel = require("../models/user.model");
+const UserModel =require('codian-academy-model/models/user.model");
 const SessionController = require("./session.controller");
 const OtpController = require("./otp.controller");
 const { auth } = require("firebase-admin");

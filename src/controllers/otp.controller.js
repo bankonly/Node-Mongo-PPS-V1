@@ -1,6 +1,6 @@
 const Catcher = require("../middlewares/async");
 const { Res, _, JwtGenerator, JwtGeneratorResetToken } = require("../utils/common-func");
-const OtpModel = require("../models/opt.model");
+const OtpModel =require('codian-academy-model/models/opt.model');
 const MailFunc = require("../func/mail.func");
 const Jwt = require("jsonwebtoken");
 
