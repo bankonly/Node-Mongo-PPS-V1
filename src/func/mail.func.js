@@ -1,9 +1,8 @@
 const res = require("ssv-response-no-res");
 const Mail = require("nodemailer");
-const { HtmlMailThemplate } = require("../storages/otp");
 
 const MailFunc = {
-  send: async ({ to, text = "hello from lamo", subject = "from Nome", from = null, otp_code, link }) => {
+  send: async ({ to, text = "Greeting!!", subject = "from Codian-Cademy", from = null, otp_code, link }) => {
     const transporter = Mail.createTransport({
       service: process.env.MAIL_SERVICE,
       auth: {
@@ -17,8 +16,14 @@ const MailFunc = {
       to: to,
       subject: subject,
       text: text,
-      html: HtmlMailThemplate(otp_code, link),
+      html: `
+      <h3>Codian Academy</h3>
+      <p>Your verify code</p>
+      <h1>${otp_code}</h1>
+      `,
     };
+
+    console.log(mailSendOption);
 
     const sendMail = await transporter.sendMail(mailSendOption);
     if (sendMail.error) throw new Error("  Mail failed");
