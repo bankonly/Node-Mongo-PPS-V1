@@ -1,5 +1,5 @@
 const Catcher = require("../middlewares/async");
-const UserModel =require('codian-academy-model/models/user.model");
+const UserModel =require("codian-academy-model/models/user.model");
 const Joi = require("@hapi/joi");
 const Mongo = require("../utils/mongo-query");
 const { _, RemoveSpace } = require("../utils/common-func");

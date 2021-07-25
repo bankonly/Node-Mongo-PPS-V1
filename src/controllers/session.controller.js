@@ -1,4 +1,4 @@
-const SessionModel =require('codian-academy-model/models/session.model");
+const SessionModel =require("codian-academy-model/models/session.model");
 const { GetFullUrl, Res, _ } = require("../utils/common-func");
 const Catcher = require("../middlewares/async");
 const Mongo = require("../utils/mongo-query");
