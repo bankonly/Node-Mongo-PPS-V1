@@ -1,6 +1,7 @@
 const _ = require("ssv-utils");
 
-const findById = async (model, { _id, select = "-password -refresh_token" }) => {
+const findById = async (model, { _id, select = "-password -refresh_token -v" }) => {
+  if (!_id) throw new Error(`400::invalid ${_id || "objectId"}`);
   _id = _.isArray(_id) ? _id : _id.toString();
   if (!_.isObjectId(_id)) throw new Error(`400::invalid ${_id || "objectId"}`);
   let condition = { _id: { $in: _id }, deleted_at: null };
@@ -45,7 +46,7 @@ const find = async (
     _id,
     condition = {},
     populate,
-    select,
+    select = "-__v",
     search = { key: [], key_word: null, options: "i" },
     error_code = 204,
   }
@@ -78,8 +79,8 @@ const find = async (
   if (sort) result = result.sort(sort);
 
   if (paginate.paginate) {
-    paginate.limit = parseInt(paginate.limit) || false;
-    paginate.page = parseInt(paginate.page) || false;
+    paginate.limit = parseInt(paginate.paginate.limit) || false;
+    paginate.page = parseInt(paginate.paginate.page) || false;
 
     if (!paginate.limit || !paginate.page) throw new Error("400::limit and page should be type of number");
     let skip = 0;

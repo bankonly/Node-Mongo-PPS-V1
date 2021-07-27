@@ -1,6 +1,9 @@
 controller:
 	node src/commands/mkdir.controller.js $n
 
+middleware:
+	node src/commands/mkdir.middleware.js $n
+
 model:
 	node src/commands/mkdir.model.js $n
 
