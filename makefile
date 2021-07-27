@@ -7,6 +7,9 @@ middleware:
 model:
 	node src/commands/mkdir.model.js $n
 
+func:
+	node src/commands/mkdir.func.js $n
+
 resource:
 	node src/commands/mkdir.resource.js $n
 
