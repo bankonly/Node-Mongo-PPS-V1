@@ -94,9 +94,7 @@ const VideoFunc = {
             const full_path = path + file_name
             for (let index = 0; index < video_size_arr.length; index++) {
                 const height = video_size_arr[index];
-                console.log(height, video_height);
                 if (height <= video_height) {
-                    console.log(height, video_size[height]);
                     cmd.exec(`ffmpeg -i ${full_path} -vf scale=${video_size[height]} -preset slow -crf 18 ${path}${height}-${file_name}`, { detached: true })
                 }
             }
