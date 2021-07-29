@@ -12,9 +12,9 @@ const aws_config = new AWS.S3({
   secretAccessKey: secret,
 });
 
-const uploadFile = async ({ file, bucket = process.env.AWS_S3_BUCKET_NAME, fileType = "jpg", path, complete = false }) => {
+const uploadFile = async ({ file, bucket = process.env.AWS_S3_BUCKET_NAME, fileType = "jpg", path, complete = false ,file_name}) => {
   try {
-    const only_file_name = uuid() + Date.now() + "." + fileType;
+    const only_file_name = file_name ||  uuid() + Date.now() + "." + fileType;
     const fileName = path + only_file_name
 
     // Setting up S3 upload parameters
@@ -29,7 +29,6 @@ const uploadFile = async ({ file, bucket = process.env.AWS_S3_BUCKET_NAME, fileT
       await aws_config.upload(option).promise();
     } else {
       aws_config.upload(option).promise();
-
     }
     return fileName;
   } catch (error) {

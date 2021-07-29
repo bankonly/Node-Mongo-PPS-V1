@@ -2,7 +2,7 @@ const _ = require("ssv-utils")
 const FileUpload = require("ssv-file-upload");
 const Constant = require("../configs/constant");
 const ffmpeg = require("fluent-ffmpeg")
-const cmd = require("child_process")
+const cmd = require("child_process");
 
 const MAX_VIDEO_DURATION_MINUTE = parseInt(process.env.MAX_VIDEO_DURATION_MINUTE) || false
 const MIN_HEIGHT_DIMENSION = parseInt(process.env.MIN_HEIGHT_DIMENSION) || false
@@ -25,10 +25,9 @@ const get_video_info = async (path) => {
 
 const video_size = {
     "1080": "1920:1080",
-    "1280": "1280:720",
-    "720": "854:480",
-    "640": "640:360",
-    "426": "426:240",
+    "720": "1280:720",
+    "426": "854:480",
+    "360": "640:360"
 }
 
 const video_size_arr = Object.keys(video_size)
@@ -36,14 +35,14 @@ const video_size_arr = Object.keys(video_size)
 
 const VideoFunc = {
     /* 
-        1. Upload Video First
-        2. Delete of pre_save if error else move to video
-        3. Check video time limit 10minute ,max resolution is 1080 ,minimum is 360
+    1. Upload Video First
+    2. Delete of pre_save if error else move to video
+    3. Check video time limit 10 minute , max resolution is 1080 ,minimum is 360
     */
     save: async ({ file, path }) => {
         let path_to_file
         try {
-            const file_name = FileUpload.uploadImage({ path: path, fileType: "mp4", originalName: false, file: file })
+            const file_name = FileUpload.uploadImage({ path: path, originalName: false, file: file })
             if (!file_name.status) throw new Error(`400::${file_name.msg}`)
             const name = file_name.data
             path_to_file = path + name
@@ -61,6 +60,7 @@ const VideoFunc = {
             if (video_info.height > MAX_HEIGHT_DIMENSION) {
                 throw new Error(`400::your video dimension is too big, maximum quality is 1080 pixel`)
             }
+
 
             function delete_cb() {
                 cmd.execSync("rm -rf " + path_to_file)
@@ -94,8 +94,8 @@ const VideoFunc = {
             const full_path = path + file_name
             for (let index = 0; index < video_size_arr.length; index++) {
                 const height = video_size_arr[index];
-                if (height <= video_height) {
-                    cmd.exec(`ffmpeg -i ${full_path} -vf scale=${video_size[height]} -preset slow -crf 18 ${path}${height}-${file_name}`, { detached: true })
+                if (height < video_height) {
+                    cmd.exec(`ffmpeg -i ${full_path} -filter:v scale=${video_size[height]}:-2 ${path}${height}-${file_name}`, { detached: true })
                 }
             }
         } catch (error) {

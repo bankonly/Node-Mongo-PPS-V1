@@ -7,7 +7,8 @@ const Constant = {
     },
     video_path: {
         save: root_path + "video/",
-        pre_save: root_path + "pre_video/"
+        pre_save: root_path + "pre_video/",
+        aws_path: "video/"
     }
 };
 

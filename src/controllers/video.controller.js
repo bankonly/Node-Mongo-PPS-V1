@@ -5,12 +5,14 @@ const VideoModel = require("codian-academy-model/models/coursevideo.model");
 const VideoFunc = require("../func/video.func");
 const Constant = require("../configs/constant");
 const Mongo = require("../utils/mongo-query");
-
+const AwsFunc = require("../func/aws.func");
 
 const VideoController = {
   list: Catcher(async (req, res) => {
     const resp = new Res(res);
-    return resp.success({});
+    const select = req.query.select || "desc last_watch_time video_time title episode video_path full_video_path"
+    const found_video = await Mongo.find(VideoModel, { condition: { course_id: req.body.course_id }, paginate: { paginate: req.query }, select })
+    return resp.success({ data: found_video });
   }),
   get: Catcher(async (req, res) => {
     const resp = new Res(res);
@@ -30,6 +32,7 @@ const VideoController = {
     const path = Constant.video_path.save + req.body.course_id + "/"
     const upload_video = await VideoFunc.save({ file: files.video, path })
 
+
     VideoFunc.resize({ path: path, video_height: upload_video.video_info.height, file_name: upload_video.file_name })
 
     req.body.video_path = upload_video.file_name
@@ -44,6 +47,10 @@ const VideoController = {
       upload_video.delete_cb()
       throw new Error(error)
     }
+
+    // const file = fs.readFileSync(upload_video.path)
+    AwsFunc.uploadFile({ path: Constant.video_path.aws_path + req.body.course_id + "/" + new_course_video._id + "/", file: files.video, file_name: upload_video.file_name })
+
 
     return resp.success({ data: new_course_video });
   }),
