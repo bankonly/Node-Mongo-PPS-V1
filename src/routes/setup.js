@@ -12,11 +12,10 @@ const CourseRouter = require("./course.route");
 const VideoRouter = require("./video.route");
 
 const InitialRoute = (app) => {
-  app.use("/api" /* [NO AUTH] */, [IndexRouter]);
-  app.use("/api/otp", OtpAuth, [OtpRouter]);
-  app.use("/api", Auth, [UserRouter, SessionRoute, CourseToolRouter, CourseTypeRouter]);
-  app.use("/api", InstructorMiddleware, [InstructorRouter, CourseRouter, VideoRouter]);
-
+    app.use("/api" /* [NO AUTH] */, [IndexRouter]);
+    app.use("/api/otp", OtpAuth, [OtpRouter]);
+    app.use("/api", Auth, [UserRouter, SessionRoute, CourseToolRouter, CourseTypeRouter]);
+    app.use("/api", InstructorMiddleware, [InstructorRouter, CourseRouter, VideoRouter]);
 };
 
 module.exports = InitialRoute;

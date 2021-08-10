@@ -13,7 +13,7 @@ InitialDatabase();
 // Config all middleware
 InitialApp(app);
 
-// inital all routes
+// initial all routes
 InitialRoute(app);
 
 //On end middleware
