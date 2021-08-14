@@ -1,9 +1,9 @@
 const _ = require("ssv-utils");
 
 const findById = async (model, { _id, select = "-password -refresh_token -v" }) => {
-  if (!_id) throw new Error(`400::invalid ${_id || "objectId"}`);
+  if (!_id) throw new Error(`400::Invalid ${model.modelName}`);
   _id = _.isArray(_id) ? _id : _id.toString();
-  if (!_.isObjectId(_id)) throw new Error(`400::invalid ${_id || "objectId"}`);
+  if (!_.isObjectId(_id)) throw new Error(`400::Invalid ${model.modelName}`);
   let condition = { _id: { $in: _id }, deleted_at: null };
 
   let excute = null;
@@ -14,7 +14,7 @@ const findById = async (model, { _id, select = "-password -refresh_token -v" }) 
     excute = await model.findOne(condition).select(select);
   }
 
-  if (!excute || (_.isArray(excute) && excute.length < 1)) throw new Error(`204::no record for ${_id || "objectId"}`);
+  if (!excute || (_.isArray(excute) && excute.length < 1)) throw new Error(`400::Invalid ${model.modelName}`);
 
   return excute;
 };
@@ -55,17 +55,23 @@ const find = async (
   condition = { deleted_at: deleted_at, ...condition };
 
   // search function.
-  if (search.key.length > 0) {
-    if (!search.key_word) throw new Error("400::search query is requried");
+  if (search.key_word) {
+    if (search.key.length < 1) throw new Error("400::search field is requried");
     for (let i = 0; i < search.key.length; i++) {
-      condition[search.key[i]] = { $regex: search.key_word, $options: "i" };
+      if (_.isArray(condition['$or'])) {
+
+        condition['$or'].push({ [search.key[i]]: { $regex: search.key_word, $options: "i" } });
+      } else {
+        condition['$or'] = [{ [search.key[i]]: { $regex: search.key_word, $options: "i" } }];
+
+      }
     }
   }
 
   let result = null;
   if (!many) {
     if (_id) {
-      if (!_.validateObjectId(_id)) throw new Error(`400::invalid ${_id || "objectId"}`);
+      if (!_.validateObjectId(_id)) throw new Error(`400::Invalid ${model.modelName}`);
       condition._id = _id.toString();
     }
     // Excute Function

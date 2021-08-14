@@ -6,6 +6,7 @@ const CourseToolModel = require("codian-academy-model/models/coursetool.model");
 const CourseTypeModel = require("codian-academy-model/models/coursetype.model");
 const AwsFunc = require("../func/aws.func");
 const Constant = require("../configs/constant");
+const EnrollTypeModel = require("codian-academy-model/models/enrolltype.model");
 
 const CourseController = {
   list: Catcher(async (req, res) => {
@@ -25,9 +26,11 @@ const CourseController = {
 
     const course_tool_id = req.body.course_tool_id
     const course_type_id = req.body.course_type_id
+    const enroll_type_id = req.body.enroll_type_id
 
     await Mongo.findById(CourseToolModel, { _id: course_tool_id })
     await Mongo.findById(CourseTypeModel, { _id: course_type_id })
+    await Mongo.findById(EnrollTypeModel, { _id: enroll_type_id })
 
     const new_course = await CourseModel.create(req.body)
 
@@ -41,9 +44,11 @@ const CourseController = {
 
     const course_tool_id = req.body.course_tool_id
     const course_type_id = req.body.course_type_id
+    const enroll_type_id = req.body.enroll_type_id
 
     if (course_tool_id) await Mongo.findById(CourseToolModel, { _id: course_tool_id })
     if (course_type_id) await Mongo.findById(CourseTypeModel, { _id: course_type_id })
+    if (enroll_type_id) await Mongo.findById(EnrollTypeModel, { _id: enroll_type_id })
 
     found_course.set(req.body)
     await found_course.save()

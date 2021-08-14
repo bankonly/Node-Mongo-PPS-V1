@@ -5,6 +5,7 @@ const CourseToolModel = require("codian-academy-model/models/coursetool.model");
 const CourseTypeModel = require("codian-academy-model/models/coursetype.model");
 const StatusModel = require("codian-academy-model/models/status.model");
 const PaymentMethodModel = require("codian-academy-model/models/paymentmethod.model");
+const EnrollTypeModel = require("codian-academy-model/models/enrolltype.model");
 const { InitialDatabase } = require("../configs/database");
 
 InitialDatabase()
@@ -49,6 +50,10 @@ const data_set = {
         { name_en: "Onepay", name_la: "Onepay", numeric: 2 },
         { name_en: "Credit Card", name_la: "Credit Card", numeric: 3 },
     ],
+    enroll_type: [
+        { name: "Offline", name_la: "ຮຽນແບບຕົວຕໍ່ຕົວ", numeric: 1 },
+        { name: "Online", name_la: "ຮຽນແບບອອນໄລ", numeric: 2 },
+    ],
 };
 
 const SeedRunner = (model, { data_set, name = "SKILL" }) => {
@@ -64,3 +69,4 @@ SeedRunner(CourseTypeModel, { data_set: data_set.course_type, name: "course_type
 SeedRunner(CourseToolModel, { data_set: data_set.course_tool, name: "course_tool" });
 SeedRunner(StatusModel, { data_set: data_set.status, name: "status" });
 SeedRunner(PaymentMethodModel, { data_set: data_set.payment_method, name: "payment_method" });
+SeedRunner(EnrollTypeModel, { data_set: data_set.enroll_type, name: "enroll_type" });
