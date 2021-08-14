@@ -1,7 +1,7 @@
 {
-  "name": "dp-seller",
+  "name": "codian",
   "version": "1.0.0",
-  "description": "back end for Seller App",
+  "description": "Codian API",
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/server",
@@ -43,7 +43,7 @@
     "body-parser": "^1.19.0",
     "bson": "^4.2.0",
     "chalk": "^4.1.0",
-    "codian-academy-model": "^1.0.16",
+    "codian-academy-model": "^1.0.19",
     "convert-excel-to-json": "^1.7.0",
     "cors": "^2.8.5",
     "crypto-js": "^3.1.9-1",
@@ -53,6 +53,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
     "express-useragent": "^1.0.15",
+    "file-type": "^16.5.3",
     "firebase-admin": "^8.13.0",
     "fluent-ffmpeg": "^2.1.2",
     "formidable": "^1.2.2",

@@ -19,13 +19,13 @@ const findById = async (model, { _id, select = "-password -refresh_token -v" }) 
   return excute;
 };
 
-const remove = async (model, { _id, removeFromDb = false, deleted_at = Date.now(), ENP_APP = process.env.NODE_ENV }) => {
+const remove = async (model, { _id, removeFromDb = false, deleted_at = Date.now(), ENV_APP = process.env.ENV_APP }) => {
   let excute = await findById(model, { _id });
   if (excute.deleted_at !== null) {
     return true;
   }
 
-  if (removeFromDb || NODE_ENV === "development") {
+  if (removeFromDb || ENV_APP === "development") {
     excute = await model.findByIdAndDelete(_id);
   } else {
     excute.deleted_at = deleted_at;

@@ -3,6 +3,7 @@ const { v4 } = require("uuid");
 const uuid = v4;
 require("dotenv").config();
 const sharp = require('sharp');
+const _ = require("ssv-utils")
 
 const key = process.env.AWS_ACCESS_KEY_ID;
 const secret = process.env.AWS_SECRET_KEY;
@@ -12,10 +13,17 @@ const aws_config = new AWS.S3({
   secretAccessKey: secret,
 });
 
-const uploadFile = async ({ file, bucket = process.env.AWS_S3_BUCKET_NAME, fileType = "jpg", path, complete = false ,file_name}) => {
+const uploadFile = async ({ file, bucket = process.env.AWS_S3_BUCKET_NAME, fileType = "jpg", path, complete = false, file_name, origin_filename = false, return_only_name = false }) => {
   try {
-    const only_file_name = file_name ||  uuid() + Date.now() + "." + fileType;
+    let only_file_name = file_name || uuid() + Date.now() + "." + fileType;
+    if (origin_filename) {
+      only_file_name = file.name
+    }
+
+
     const fileName = path + only_file_name
+
+
 
     // Setting up S3 upload parameters
     const option = {
@@ -30,6 +38,8 @@ const uploadFile = async ({ file, bucket = process.env.AWS_S3_BUCKET_NAME, fileT
     } else {
       aws_config.upload(option).promise();
     }
+
+    if (return_only_name) return only_file_name
     return fileName;
   } catch (error) {
     throw new Error(error.message);
@@ -38,6 +48,9 @@ const uploadFile = async ({ file, bucket = process.env.AWS_S3_BUCKET_NAME, fileT
 
 const upload_img = async ({ file, bucket = process.env.AWS_S3_BUCKET_NAME, fileType = "jpg", path, resize, complete = false }) => {
   try {
+
+    if (_.isArray(file) && file.length > 1) throw new Error(`400::Multiple file not yet support`)
+
     const only_file_name = uuid() + Date.now() + "." + fileType;
     const fileName = path + only_file_name
 

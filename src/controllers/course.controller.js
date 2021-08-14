@@ -4,6 +4,8 @@ const CourseModel = require("codian-academy-model/models/course.model")
 const Mongo = require("../utils/mongo-query");
 const CourseToolModel = require("codian-academy-model/models/coursetool.model");
 const CourseTypeModel = require("codian-academy-model/models/coursetype.model");
+const AwsFunc = require("../func/aws.func");
+const Constant = require("../configs/constant");
 
 const CourseController = {
   list: Catcher(async (req, res) => {
@@ -34,19 +36,51 @@ const CourseController = {
   update: Catcher(async (req, res) => {
     const resp = new Res(res);
 
+    const course_id = req.params._id
+    const found_course = await Mongo.findById(CourseModel, { _id: course_id })
+
+    const course_tool_id = req.body.course_tool_id
+    const course_type_id = req.body.course_type_id
+
+    if (course_tool_id) await Mongo.findById(CourseToolModel, { _id: course_tool_id })
+    if (course_type_id) await Mongo.findById(CourseTypeModel, { _id: course_type_id })
+
+    found_course.set(req.body)
+    await found_course.save()
+
+    return resp.success({ data: found_course });
+  }),
+  update_course_thumpnail: Catcher(async (req, res) => {
+    const resp = new Res(res);
     const course_id = req.body.course_id
     const found_course = await Mongo.findById(CourseModel, { _id: course_id })
 
     if (!_.isFile(req.files, "img")) throw new Error(`400::please add img`)
 
-    return resp.success({});
+    const path = Constant.image_path.course_thumbnail + course_id + "/"
+    const upload_img = await AwsFunc.upload_img({ file: req.files.img, fileType: "jpg", path, resize: [800] })
+    found_course.thumbnail = upload_img
+
+    await found_course.save()
+
+    return resp.success({ data: upload_img });
   }),
-  update_course_thumpnail: Catcher(async (req, res) => {
+  publish_course: Catcher(async (req, res) => {
     const resp = new Res(res);
+
+    const course_id = req.body.course_id
+    const is_publish = req.body.is_publish
+    const found_course = await Mongo.findById(CourseModel, { _id: course_id })
+
+    found_course.is_publish = is_publish
+    await found_course.save()
+
     return resp.success({});
   }),
   remove: Catcher(async (req, res) => {
     const resp = new Res(res);
+    const course_id = req.params._id
+    await Mongo.remove(CourseModel, { _id: course_id })
     return resp.success({});
   }),
 };
