@@ -46,7 +46,7 @@ const data_set = {
         { name_en: "Purchased", name_la: "ຊື້ແລ້ວ", numeric: 2 },
     ],
     payment_method: [
-        { name_en: "Manual Transfer", name_la: "ເງິນສົດຫຼືໂອນ", numeric: 1 },
+        { name_en: "P2P (Offline Transfer)", name_la: "ເງິນສົດຫຼືໂອນ", numeric: 1 },
         { name_en: "Onepay", name_la: "Onepay", numeric: 2 },
         { name_en: "Credit Card", name_la: "Credit Card", numeric: 3 },
     ],

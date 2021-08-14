@@ -2,6 +2,7 @@ const Res = require("ssv-response");
 const Utils = require("ssv-utils");
 const Jwt = require("jsonwebtoken");
 const fs = require("fs");
+const StatusModel = require("codian-academy-model/models/status.model");
 
 const LOG = (msg) => console.log(msg);
 module.exports.LOG = LOG;
@@ -54,3 +55,13 @@ module.exports.Mkdir = ({ write_path, file_type, read_file, method }) => {
   fs.writeFileSync(write_path + file_name, write_data);
   LOG(method + ": " + file_name + " has created");
 };
+
+
+const GetStatusId = async (numeric) => {
+  const found_status = await StatusModel.findOne({ numeric, deleted_at: null })
+  if (!found_status) throw new Error(`500::Can not process,Failed by Status`)
+
+  return { data: found_status, _id: found_status._id.toString() }
+}
+
+module.exports.GetStatusId = GetStatusId

@@ -1,4 +1,4 @@
-const CourseToolController = require("../controllers/CourseTool.controller");
+const CourseToolController = require("../controllers/courseTool.controller");
 
 const http = require("express").Router();
 

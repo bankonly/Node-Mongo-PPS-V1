@@ -100,7 +100,7 @@ const find = async (
   if (throw_error) {
     let check = await result;
     if ((_.isArray(check) && check.length < 1) || !check) {
-      throw new Error(error_code + "::no data found");
+      throw new Error(error_code + "::No record on " + model.modelName);
     }
   }
 

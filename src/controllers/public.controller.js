@@ -1,5 +1,6 @@
 const CourseModel = require("codian-academy-model/models/course.model");
 const EnrollTypeModel = require("codian-academy-model/models/enrolltype.model");
+const PaymentMethodModel = require("codian-academy-model/models/paymentmethod.model");
 const Catcher = require("../middlewares/async");
 const { Res, _ } = require("../utils/common-func");
 const Mongo = require("../utils/mongo-query");
@@ -34,9 +35,11 @@ const PublicController = {
     const found_enroll = await Mongo.find(EnrollTypeModel, { select })
     return resp.success({ data: found_enroll });
   }),
-  update: Catcher(async (req, res) => {
+  list_payment_method: Catcher(async (req, res) => {
     const resp = new Res(res);
-    return resp.success({});
+    const select = "name_la name_en" || req.query.field
+    const found_payment = await Mongo.find(PaymentMethodModel, { select })
+    return resp.success({ data: found_payment });
   }),
   remove: Catcher(async (req, res) => {
     const resp = new Res(res);

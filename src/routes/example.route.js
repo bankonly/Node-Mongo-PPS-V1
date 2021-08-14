@@ -1,4 +1,4 @@
-const ExampleController = require("../controllers/Example.controller");
+const ExampleController = require("../controllers/example.controller");
 
 const http = require("express").Router();
 

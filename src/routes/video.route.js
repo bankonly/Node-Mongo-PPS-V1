@@ -1,4 +1,4 @@
-const VideoController = require("../controllers/Video.controller");
+const VideoController = require("../controllers/video.controller");
 
 const http = require("express").Router();
 

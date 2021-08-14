@@ -1,4 +1,4 @@
-const CourseTypeController = require("../controllers/CourseType.controller");
+const CourseTypeController = require("../controllers/courseType.controller");
 
 const http = require("express").Router();
 
