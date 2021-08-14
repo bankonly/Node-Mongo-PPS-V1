@@ -1,5 +1,5 @@
 const Catcher = require("../middlewares/async");
-const { Res } = require("../utils/common-func");
+const { Res, _ } = require("../utils/common-func");
 const CourseModel = require("codian-academy-model/models/course.model")
 const Mongo = require("../utils/mongo-query");
 const CourseToolModel = require("codian-academy-model/models/coursetool.model");
@@ -32,6 +32,16 @@ const CourseController = {
     return resp.success({ data: new_course });
   }),
   update: Catcher(async (req, res) => {
+    const resp = new Res(res);
+
+    const course_id = req.body.course_id
+    const found_course = await Mongo.findById(CourseModel, { _id: course_id })
+
+    if (!_.isFile(req.files, "img")) throw new Error(`400::please add img`)
+
+    return resp.success({});
+  }),
+  update_course_thumpnail: Catcher(async (req, res) => {
     const resp = new Res(res);
     return resp.success({});
   }),
