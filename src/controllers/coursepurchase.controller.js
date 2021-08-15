@@ -27,10 +27,10 @@ const CoursePurchaseController = {
 
     const course_id = req.body.course_id
 
-    const found_course_purchase = await Mongo.find(CoursePurchaseModel, { condition: { user_id: req.user._id, course_id }, many: false })
+    const found_course_purchase = await Mongo.find(CoursePurchaseModel, { condition: { user_id: req.user._id, course_id }, many: false, throw_error: true })
     if (!found_course_purchase.is_approved) throw new Error(`400::Please ensure you've already complete your payment, or contact your Instructor`)
 
-    const select = req.query.select || "desc video_time title episode video_path snipped_file"
+    const select = req.query.select || "desc video_time title episode video_path snipped_fil thumbnail"
     const found_video = await Mongo.find(CourseVideoModel, { condition: { course_id }, paginate: { paginate: req.query }, select })
     return resp.success({ data: found_video });
   }),

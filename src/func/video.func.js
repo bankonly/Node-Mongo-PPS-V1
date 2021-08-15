@@ -77,7 +77,7 @@ const VideoFunc = {
                 cmd.execSync("rm -rf " + thumbnail)
             }
 
-            return { video_info, delete_cb, file_name: name, path: path_to_file, thumbnail_to_aws }
+            return { video_info, delete_cb, file_name: name, path: path_to_file, thumbnail_to_aws, thumbnail: name_with_out_type + ".jpg" }
         } catch (error) {
             if (path_to_file) {
                 cmd.execSync("rm -rf " + path_to_file)

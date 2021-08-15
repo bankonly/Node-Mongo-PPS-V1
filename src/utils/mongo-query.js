@@ -48,7 +48,7 @@ const find = async (
     populate,
     select = "-__v",
     search = { key: [], key_word: null, options: "i" },
-    error_code = 204,
+    error_code = 400,
   }
 ) => {
   if (!model) throw new Error("model is requried in find function");

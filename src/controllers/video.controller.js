@@ -37,6 +37,7 @@ const VideoController = {
     req.body.video_max_size = upload_video.video_info.height
     req.body.video_time = upload_video.video_info.duration_sec
     req.body.full_video_path = upload_video.path
+    req.body.thumbnail = upload_video.thumbnail
     
     let new_course_video
     try {
