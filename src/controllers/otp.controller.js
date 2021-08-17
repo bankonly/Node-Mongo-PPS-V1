@@ -1,4 +1,4 @@
-const { Res, JwtGeneratorResetToken } = require("../utils/common-func");
+const { Res, JwtGeneratorResetToken, _ } = require("../utils/common-func");
 const OtpModel = require("codian-academy-model/models/opt.model");
 const MailFunc = require("../func/mail.func");
 const Jwt = require("jsonwebtoken");
