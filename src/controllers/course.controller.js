@@ -12,13 +12,20 @@ const CourseController = {
     list: Catcher(async(req, res) => {
         const resp = new Res(res);
         const instructor_id = req.instructor._id
+        console.log(instructor_id)
         const select = req.query.select || "name desc thumbnail price is_publish is_approved"
         const found_course = await Mongo.find(CourseModel, { condition: { instructor_id }, paginate: { paginate: req.query }, select })
         return resp.success({ data: found_course });
     }),
     get: Catcher(async(req, res) => {
         const resp = new Res(res);
-        return resp.success({});
+        const instructor_id = req.instructor._id
+        const populate = {
+            path: "course_tool_id course_type_id enroll_type_id instructor_id"
+        }
+        console.log(req.params._id);
+        const found_course = await Mongo.find(CourseModel, { condition: { instructor_id, _id: req.params._id }, many: false, populate: populate })
+        return resp.success({ data: found_course });
     }),
     create: Catcher(async(req, res) => {
         const resp = new Res(res);
