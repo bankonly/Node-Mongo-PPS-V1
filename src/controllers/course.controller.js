@@ -12,7 +12,6 @@ const CourseController = {
     list: Catcher(async(req, res) => {
         const resp = new Res(res);
         const instructor_id = req.instructor._id
-        console.log(instructor_id)
         const select = req.query.select || "name desc thumbnail price is_publish is_approved"
         const found_course = await Mongo.find(CourseModel, { condition: { instructor_id }, paginate: { paginate: req.query }, select })
         return resp.success({ data: found_course });
