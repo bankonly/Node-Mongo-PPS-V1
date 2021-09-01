@@ -12,12 +12,13 @@ const CourseRouter = require("./course.route");
 const VideoRouter = require("./video.route");
 const PublicRouter = require("./public.route");
 const CoursePurchaseRouter = require("./coursepurchase.route");
+const SectionRouter = require("./section.route");
 
 const InitialRoute = (app) => {
     app.use("/api" /* [NO AUTH] */ , [IndexRouter, PublicRouter, CourseToolRouter, CourseTypeRouter]);
     app.use("/api/otp", OtpAuth, [OtpRouter]);
     app.use("/api", Auth, [UserRouter, SessionRoute, CoursePurchaseRouter]);
-    app.use("/api", InstructorMiddleware, [InstructorRouter, CourseRouter, VideoRouter]);
+    app.use("/api", InstructorMiddleware, [InstructorRouter, CourseRouter, VideoRouter, SectionRouter]);
 };
 
 module.exports = InitialRoute;
