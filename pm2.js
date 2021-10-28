@@ -28,16 +28,3 @@ if (process.argv.length < 6) {
         }
     }
 }
-
-// [program:mongp40000]
-// command=mongod --replSet myapp --dbpath /root/droppinx/dpxReplica/dpx1 --port 40000 --fork --syslog
-// autostart=true
-// autorestart=true
-// startretries=5
-// numprocs=1
-// startsecs=0
-// process_name=%(program_name)s_%(process_num)02d
-// stderr_logfile=/var/log/supervisor/%(program_name)s_stderr.log
-// stderr_logfile_maxbytes=10MB
-// stdout_logfile=/var/log/supervisor/%(program_name)s_stdout.log
-// stdout_logfile_maxbytes=10MB
