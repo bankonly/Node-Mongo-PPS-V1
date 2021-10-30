@@ -33,6 +33,9 @@ router.get("/me", Auth, profile)
 app.use("/api", router)
 
 OnEndInitialApp(app);
-const listener = app.listen(process.env.APP_PORT);
+
+const port = process.argv[2] || process.env.APP_PORT
+
+const listener = app.listen(port);
 InitSocket(listener);
-console.log("Server Started " + process.env.APP_PORT);
+console.log("Server Started " + port);

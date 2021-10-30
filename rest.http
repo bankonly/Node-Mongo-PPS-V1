@@ -1,5 +1,5 @@
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTdhYzlkZTNiZjg4ZTM3NWY1OTQ1NzciLCJpYXQiOjE2MzU0MzgzMTIsImV4cCI6MTYzNjA0MzExMn0.KH_LhkeraTLrHj3EvvoT25fuWKcwje0PkOSU6uYhTSs
-@reset_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTdhYzlkZTNiZjg4ZTM3NWY1OTQ1NzciLCJpYXQiOjE2MzU0NDA5MDAsImV4cCI6MTYzNTQ0MTAyMH0.xUCaVfrxqZGqFtMyC4h89cwqC1L8LKLrun1q7eeXilo
+@reset_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTdhYzlkZTNiZjg4ZTM3NWY1OTQ1NzciLCJpYXQiOjE2MzU2MTAzNzAsImV4cCI6MTYzNTYxMDQ5MH0.KfSG9eKatz02q3qOhcx29D-EoCcOH2ht1R3q9SEw7Qw
 
 ### Register
 POST http://127.0.0.1:5200/api/register HTTP/1.1
@@ -42,7 +42,7 @@ content-type: application/json
 Authorization: {{reset_token}}
 
 {
-    "otp_code":"392939"
+    "otp_code":"291865"
 }
 
 ### Verify OTP
