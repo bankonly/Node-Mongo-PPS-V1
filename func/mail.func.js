@@ -1,7 +1,12 @@
 const Mail = require("nodemailer");
-const { JwtGeneratorResetToken } = require("./common-func");
+const { JwtGeneratorResetToken, JwtGenerator } = require("./common-func");
 const OtpModel = require("starter-model-mongo/models/opt.model");
-const _ = require("ssv-utils")
+const _ = require("ssv-utils");
+const twilio_sms = require("twilio-sms");
+
+const OTP_ALLOW_SEND_TIME = 3;
+const OPT_ALLOW_RESENT_SECOND = 60;
+const OTP_EXPIRED_TIME = 60;
 
 const MailFunc = {
   send: async ({ to, text = "Greeting!!", subject = "SUBJECT", from = null, otp_code, link }) => {
@@ -31,14 +36,11 @@ const MailFunc = {
   generateLink: ({ host, otp_code }) => host + otp_code,
 };
 
-
-
 const OtpFunc = {
-  send_otp: async ({ model, req, opts }) => {
+  send_otp: async ({ model, req, opts, conf, to, type = "phone" }) => {
     const body = req.body;
-    if (!_.isEmail(body.email)) throw new Error(`400-ERR4001`);
 
-    const user = await model.findOne({ email: body.email }).select("_id email");
+    const user = await model.findOne(conf);
     if (!user) throw new Error("400-ERR4002");
 
     const user_id = user._id.toString();
@@ -50,8 +52,8 @@ const OtpFunc = {
 
     let save_data = {};
     save_data.code = opt_new_code;
-    save_data.expire_time = _.date.addTime(process.env.OTP_EXPIRED_TIME);
-    save_data.resend_after = _.date.addTime(process.env.OPT_ALLOW_RESENT_SECOND);
+    save_data.expire_time = _.date.addTime(OTP_EXPIRED_TIME);
+    save_data.resend_after = _.date.addTime(OPT_ALLOW_RESENT_SECOND);
     save_data.author = user._id;
 
     let new_otp = null;
@@ -75,14 +77,18 @@ const OtpFunc = {
 
     if (!new_otp) throw new Error("otp save failed");
 
-    await MailFunc.send({
-      to: user.email,
-      otp_code: otp_code.otp_code,
-      link: MailFunc.generateLink({
-        host: process.env.APP_HOST,
+    if (type === "phone") {
+      await twilio_sms.send_sms({ to: to, message: "This is your verify code: " + opt_new_code });
+    } else {
+      await MailFunc.send({
+        to: user.email,
         otp_code: otp_code.otp_code,
-      }),
-    });
+        link: MailFunc.generateLink({
+          host: process.env.APP_HOST,
+          otp_code: otp_code.otp_code,
+        }),
+      });
+    }
 
     const payload = { _id: user._id };
     const token = JwtGeneratorResetToken(payload);
@@ -107,7 +113,7 @@ const OtpFunc = {
       throw new Error("400-ERR4003");
     }
 
-    if (otp_data.resend_count > process.env.OTP_ALLOW_SEND_TIME) throw new Error("400-ERR4004");
+    if (otp_data.resend_count > OTP_ALLOW_SEND_TIME) throw new Error("400-ERR4004");
 
     if (otp_data.code !== body.otp_code) {
       otp_data.resend_count += 1;
@@ -116,6 +122,11 @@ const OtpFunc = {
 
     otp_data.allow_to_reset = true;
     await otp_data.save();
+
+    const payload = { _id: auth._id };
+    const access_credential = JwtGenerator(payload);
+
+    return access_credential;
   },
   reset_password: async (model, { req }) => {
     const body = req.body;
@@ -139,6 +150,3 @@ const OtpFunc = {
 };
 
 module.exports = OtpFunc;
-
-
-

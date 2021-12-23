@@ -1,21 +1,27 @@
 const AsyncMiddleware = require("../middlewares/async");
-const Res = require("async-api-response")
+const Res = require("async-api-response");
 const _ = require("ssv-utils");
 const { JwtGenerator } = require("../func/common-func");
-const UserModel = require("starter-model-mongo/models/user.model")
+const UserModel = require("starter-model-mongo/models/user.model");
+const OtpFunc = require("../func/mail.func");
 
-const register = AsyncMiddleware(async (req, res) => {
-    const resp = new Res(res);
-    const body = req.body;
+const register = AsyncMiddleware(async (req, res, next, opts, commit) => {
+  const resp = new Res(res);
+  const body = req.body;
 
-    body.password = await _.bcryptFn.hashPassword(body.password);
-    const created_user = await UserModel.create(body);
+  body.password = await _.bcryptFn.hashPassword(body.password);
+  await UserModel.create(body);
 
-    const payload = { _id: 1 };
-    const access_credential = JwtGenerator(payload);
+  const token = await OtpFunc.send_otp({
+    model: UserModel,
+    req,
+    opts,
+    conf: { phone_number: req.body.phone_number },
+    to: req.body.phone_number,
+  });
 
-    return resp.response({ data: access_credential })
-})
+  await commit();
+  return resp.response({ data: token });
+}, true);
 
-
-module.exports = register
+module.exports = register;

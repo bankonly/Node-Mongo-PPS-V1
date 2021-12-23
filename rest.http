@@ -1,6 +1,5 @@
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTdhYzlkZTNiZjg4ZTM3NWY1OTQ1NzciLCJpYXQiOjE2MzU0MzgzMTIsImV4cCI6MTYzNjA0MzExMn0.KH_LhkeraTLrHj3EvvoT25fuWKcwje0PkOSU6uYhTSs
-@reset_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTdhYzlkZTNiZjg4ZTM3NWY1OTQ1NzciLCJpYXQiOjE2MzU2MTAzNzAsImV4cCI6MTYzNTYxMDQ5MH0.KfSG9eKatz02q3qOhcx29D-EoCcOH2ht1R3q9SEw7Qw
-
+@reset_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MWM0MzU1MTlmNzg0MjNiYjNkYzdjZWIiLCJpYXQiOjE2NDAyNTA4MjgsImV4cCI6MTY0MDI1MTAwOH0.4OBjRqf5RVhy-MjpGcM9V_kaWdg3G3URG9-Xlw8B3Ks
 ### Register
 POST http://127.0.0.1:5200/api/register HTTP/1.1
 content-type: application/json
@@ -8,8 +7,9 @@ content-type: application/json
 {
     "password":"111998tsc",
     "confirm_password":"111998tsc",
-    "email":"souksavansh.personal@gmail.com",
-    "username":"souksavanh"
+    "email":"souksavanssh.personal@gmail.com",
+    "username":"souksasvanh",
+    "phone_number":"8562052750365"
 }
 
 ### LOGIN
@@ -18,7 +18,7 @@ content-type: application/json
 
 {
     "password":"123123123",
-    "username":"souksavanh.personal@gmail.com"
+    "username":"8562052750365"
 }
 
 
@@ -32,17 +32,18 @@ POST http://127.0.0.1:5200/api/send-otp
 content-type: application/json
 
 {
-    "email":"souksavanh.personal@gmail.com"
+    "phone_number":"8562052750365"
 }
 
-
 ### Verify OTP
-POST http://127.0.0.1:5200/api/verify-otp
+
+@type = enum["register","resetpwd"]
+POST http://127.0.0.1:5200/api/verify-otp?type=register
 content-type: application/json
 Authorization: {{reset_token}}
 
 {
-    "otp_code":"291865"
+    "otp_code":"410494"
 }
 
 ### Verify OTP
